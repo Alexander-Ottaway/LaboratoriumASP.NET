@@ -29,22 +29,17 @@ public class HomeController : Controller
     
     public IActionResult Kalkulator(Operator? op, double? x, double? y)
     {
-       // var op = Request.Query["op"];
-        //var x = double.Parse(Request.Query["x"]);
-        //var y = double.Parse(Request.Query["y"]);
-
-        if (x is not null && y is null && op == Operator.Sin)
+       
+        if (x is null)
         {
-            ViewBag.Result = Math.Sin((double)x);
-        }
-        else if (x is null || y is null)
-        {
-            ViewBag.ErrorMessage = "Niepoprawny format parametru x lub y";
+            ViewBag.ErrorMessage = "Niepoprawny format parametru x";
             return View("CalculatorError");
         }
-        else
+
+       
+        if (op != Operator.Sin && y is null)
         {
-            ViewBag.ErrorMessage = "Niepoprawny format zapytania";
+            ViewBag.ErrorMessage = "Niepoprawny format parametru y";
             return View("CalculatorError");
         }
 
@@ -53,6 +48,7 @@ public class HomeController : Controller
             ViewBag.ErrorMessage = "Nieznany operator!";
             return View("CalculatorError"); // w przypadku złego operatora
         }
+
         switch (op)
         {
             case Operator.Add:
@@ -65,15 +61,26 @@ public class HomeController : Controller
                 ViewBag.Result = x * y;
                 break;
             case Operator.Div:
+                if (y == 0)
+                {
+                    ViewBag.ErrorMessage = "Nie można dzielić przez zero!";
+                    return View("CalculatorError");
+                }
                 ViewBag.Result = x / y;
-                break;            
+                break;
             case Operator.Pow:
                 ViewBag.Result = Math.Pow((double)x, (double)y);
                 break;
+            case Operator.Sin:
+                ViewBag.Result = Math.Sin((double)x); 
+                break;
         }
-        
+
         return View();
     }
+
+
+
 
     
 
