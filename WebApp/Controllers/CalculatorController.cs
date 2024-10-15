@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -9,11 +10,21 @@ namespace WebApp.Controllers
         {
             return View();
         }
-        
-        public IActionResult Result()
-        {
-            
-        }
 
+        public IActionResult Result(Calculator model)
+        {
+            if (!model.IsValid())
+            {
+                return View("Error");
+            }
+            return View(model);
+        }
+        
+        public IActionResult Form()
+        {
+            return View();
+        }
+        
+        
     }
 }
