@@ -1,0 +1,17 @@
+@model WebApp.Models.Birth
+
+<h2>Enter your details</h2>
+
+<form asp-action="Form" method="post">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input type="text" class="form-control" name="Name" />
+    </div>
+    <div class="form-group">
+        <label for="BirthDate">Date of Birth</label>
+        <input type="date" class="form-control" name="BirthDate" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<p>@ViewBag.Message</p>
