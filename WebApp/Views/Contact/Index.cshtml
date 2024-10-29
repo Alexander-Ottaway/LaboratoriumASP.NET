@@ -1,4 +1,5 @@
-@model System.Collections.Generic.Dictionary<int,WebApp.Models.ContactModel>
+@using Microsoft.AspNetCore.Server.Kestrel.Core
+@model List<ContactModel>
 
 @{
     ViewBag.Title = "title";
@@ -8,37 +9,52 @@
 <h2>Kontakty</h2>
 <a class="btn btn-primary" asp-action="Add" asp-controller="Contact">Dodaj Kontakt</a>
 <h4>Lista Kontaktow</h4>
-<table class="table">
-    <thead>
-    <tr>
-        <th>
-            Imię
-        </th>
-        <th>
-            Nazwisko
-        </th>
-        <th>
-            Akcje
-        </th>
-    </tr>
-    </thead>
+@if(Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(l=> l[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(l=> l[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(l=> l[0].Category)
+            </th>
+            <th class="text-end">
+                Operacje
+            </th>
+        </tr>
+        </thead>
     
-    <tbody>
-      @foreach (var entry in @Model)
-      {
-          <tr>
-              <td>
-                  @entry.Value.FirstName
-              </td>
-              <td>
-                  @entry.Value.LastName
-              </td>
-              <td>
-                  <a class="btn btn-success"asp-controller="Contact" asp-action="Edit" asp-route-id="@entry.Key">Edycja</a>
-                  <a class="btn btn-info"asp-controller="Contact" asp-action="Details" asp-route-id="@entry.Key">Szczegóły</a>
-                  <a class="btn btn-danger" asp-controller="Contact" asp-action="Delete" asp-route-id="@entry.Key">Usuń</a> 
-              </td>
-          </tr>
-      }  
-    </tbody>
-</table>
+        <tbody>
+        @foreach (var entry in @Model)
+        {
+            <tr>
+                <td>
+                    @entry.FirstName
+                </td>
+                <td>
+                    @entry.LastName
+                </td>
+                <td>
+                    @entry.Category.GetDisplayName()
+                </td>
+                <td>
+                    <div class="float-end">
+                        <a class="btn btn-success"asp-controller="Contact" asp-action="Edit" asp-route-id="@entry.Id">Edycja</a>
+                        <a class="btn btn-info"asp-controller="Contact" asp-action="Details" asp-route-id="@entry.Id">Szczegóły</a>
+                        <a class="btn btn-danger" asp-controller="Contact" asp-action="Delete" asp-route-id="@entry.Id">Usuń</a>
+                    </div>
+                </td>
+            </tr>
+        }  
+        </tbody>
+    </table>
+}
+else
+{
+    <h3 class="text-danger">Nie masz jeszcze kontaktów</h3>
+}
