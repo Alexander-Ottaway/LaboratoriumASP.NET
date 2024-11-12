@@ -42,6 +42,12 @@
         <select class="form-control" asp-for="Category" asp-items="@Html.GetEnumSelectList<Category>()"></select>
         <span class="text-danger" asp-validation-for="Category"></span>
     </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="OrganizationId"></label>
+        <select class="form-select" asp-for="OrganizationId" asp-items="@Model.Organizations"></select>
+        <span class="text-danger" asp-validation-for="OrganizationId"></span>
+    </div>
     
     <button class="btr btn-outline-primary" type="submit">Zapisz</button>
 </form>

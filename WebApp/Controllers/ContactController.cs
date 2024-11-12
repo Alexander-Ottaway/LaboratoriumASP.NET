@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models;
 using WebApp.Models.Services;
 
@@ -28,7 +29,14 @@ public class ContactController : Controller
     // GET: ContactController/Create
     public ActionResult Add()
     {
-        return View();
+        ContactModel model = new ContactModel();
+        model.Organizations = _contactService.GetOrganizations()
+            .Select(e => new SelectListItem()
+            {
+                Text = e.Name,
+                Value = e.Id.ToString()
+            }).ToList();
+        return View(model);
     }
 
     // POST: ContactController/Create
