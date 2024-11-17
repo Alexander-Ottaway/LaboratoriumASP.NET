@@ -29,26 +29,29 @@ public class ContactController : Controller
     // GET: ContactController/Create
     public ActionResult Add()
     {
-        ContactModel model = new ContactModel();
+        var model = new ContactModel();
         model.Organizations = _contactService.GetOrganizations()
-            .Select(e => new SelectListItem()
+            .Select(o => new SelectListItem()
             {
-                Text = e.Name,
-                Value = e.Id.ToString()
+                Value = o.Id.ToString(),
+                Text = o.Name,
+                Selected = o.Id == 1
+                
             }).ToList();
         return View(model);
     }
+    
 
-    // POST: ContactController/Create
     [HttpPost]
     public ActionResult Add(ContactModel model)
     {
         if (!ModelState.IsValid)
         {
-            return View();
+            return View(model);
         }
         _contactService.Add(model);
-        return RedirectToAction(nameof(Index));
+
+        return RedirectToAction("Index");
     }
 
     // GET: ContactController/Edit/5
