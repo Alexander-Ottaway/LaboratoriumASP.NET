@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models;
@@ -14,6 +15,7 @@ public class ContactController : Controller
         _contactService = contactService;
     }
 
+    [AllowAnonymous]
     // GET: ContactController
     public ActionResult Index()
     {
@@ -26,6 +28,7 @@ public class ContactController : Controller
         return View(_contactService.GetById(id));
     }
 
+    [Authorize(Roles="admin")]
     // GET: ContactController/Create
     public ActionResult Add()
     {
@@ -43,6 +46,7 @@ public class ContactController : Controller
     
 
     [HttpPost]
+    [Authorize(Roles="admin")]
     public ActionResult Add(ContactModel model)
     {
         if (!ModelState.IsValid)
